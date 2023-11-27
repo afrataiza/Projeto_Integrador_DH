@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="div_hotels_categories_table">
+        <h1>Hotel categories</h1>
+        <div class="row col-md-6 table-responsive">
+            <table id="categoriesTable" class="table table-striped">
+            <thead><tr><th>Id</th><th>Name</th><th>Category description</th><th><</th></tr></thead>
+            <tbody>
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6" style="display: none; background-color:#e6fffa;
+       padding:10px; border-radius:3px"
+        id="div_hotel_updating">
+        <form id="update_hotel_form">
+        <div class="form-group">
+        <label for="hotel_id">Id:</label>
+        <input type="text" class="form-control" id="hotel_id" readonly>
+        </div>
+        <div class="form-group">
+        <label for="hotel_name">Name:</label>
+        <input type="text" class="form-control" placeholder="Name"
+       id="name">
+       </div>
+       Change
+       
+        <div class="form-group">
+        <label for="hotel_category">category:</label>
+        <input type="text" class="form-control"
+        placeholder="category" id="category">
+        </div>
+        <button type="submit" class="btn-primary">Update</button>
+    </form>
+    <div id="response" style="display:none; margin:10px">
+    </div>
+    </div>
+    </div>
+</body>
+</html>
