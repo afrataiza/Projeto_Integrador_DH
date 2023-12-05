@@ -11,6 +11,7 @@ import java.util.UUID;
 public class PageParamsHostResponse {
     @Getter
     public static class Host {
+        @Schema(description = "The unique identifier for the hosts")
         private UUID id;
 
         @Schema(example = "Host's name")
@@ -22,8 +23,8 @@ public class PageParamsHostResponse {
         @Schema(example = "1990-01-01")
         private LocalDate birthdate;
 
-        @Schema(example = "M")
-        private String gender;
+//        @Schema(example = "M")
+//        private String gender;
 
         @Schema(example = "2023-09-27T15:30:00Z")
         private Instant created_At;

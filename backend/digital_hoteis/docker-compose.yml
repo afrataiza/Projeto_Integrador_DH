@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: digital_hoteis
+    ports:
+      - "3306:3306"
+    networks:
+      - network-dh
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: digital_hoteis_app
+    ports:
+      - "9090:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/digital_hoteis?useTimezone=true&serverTimezone=America/Sao_Paulo
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - network-dh
+
+networks:
+  network-dh:
+    driver: bridge

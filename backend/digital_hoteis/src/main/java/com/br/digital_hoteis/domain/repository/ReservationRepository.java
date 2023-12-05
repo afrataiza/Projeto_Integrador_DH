@@ -3,17 +3,20 @@ package com.br.digital_hoteis.domain.repository;
 import com.br.digital_hoteis.domain.entity.Guest;
 import com.br.digital_hoteis.domain.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
+public interface ReservationRepository extends JpaRepository<Reservation, UUID>, JpaSpecificationExecutor<Reservation> {
     @Query("SELECT r FROM Reservation r WHERE r.id = :id")
     Reservation findReservationById(UUID id);
 
@@ -41,4 +44,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
     Optional<Reservation> findByGuestAndDateRange(@Param("guest") Guest guest,
                                                   @Param("check_in_date") LocalDate check_in_date,
                                                   @Param("check_out_date") LocalDate check_out_date);
+
+    @Query("SELECT r FROM Reservation r WHERE r.guest.id = :guestId")
+    Page<Reservation> findReservationsByGuestId(@Param("guestId") UUID guestId, Pageable pageable);
 }

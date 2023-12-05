@@ -12,6 +12,7 @@ import java.util.UUID;
 public class PageParamsGuestResponse {
     @Getter
     public static class Guest {
+        @Schema(description = "The unique identifier for the guests")
         private UUID id;
 
         @Schema(example = "Guest's name")
@@ -26,8 +27,8 @@ public class PageParamsGuestResponse {
         private City city;
         private Contact contact;
 
-        @Schema(example = "M")
-        private String gender;
+//        @Schema(example = "M")
+//        private String gender;
 
         @Schema(example = "2023-09-27T15:30:00Z")
         private Instant created_At;
@@ -38,7 +39,7 @@ public class PageParamsGuestResponse {
         public City getCity() {
             return city;
         }
-        public void setEndereco(City city) {
+        public void setCity(City city) {
             this.city = city;
         }
 

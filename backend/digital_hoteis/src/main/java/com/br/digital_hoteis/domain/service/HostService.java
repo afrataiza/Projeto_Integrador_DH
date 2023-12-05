@@ -1,6 +1,7 @@
 package com.br.digital_hoteis.domain.service;
 
 import com.br.digital_hoteis.domain.entity.Host;
+import com.br.digital_hoteis.domain.entity.UserPermissionEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,4 +15,6 @@ public interface HostService {
     Host createHost(Host host);
     Host updateHost(UUID id, Map<String, Object> fields);
     void deleteHostById(UUID id);
+    void manageUserRoles(UUID userId, UserPermissionEnum newRole);
+
 }

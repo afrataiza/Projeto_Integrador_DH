@@ -37,15 +37,16 @@ public interface ReservationApi {
     @PreAuthorize("hasAuthority('USER')")
     ResponseEntity<ReservationDetailedResponse> findReservationById(@PathVariable UUID reservationId);
 
+    @PreAuthorize("hasAuthority('USER')")
     @PostMapping
     ResponseEntity<Void> createReservation(@RequestBody @Valid CreateReservationRequest request);
-
+    @PreAuthorize("hasAuthority('USER')")
     @PatchMapping("{reservationId}")
     ResponseEntity<Void> updateReservation(@PathVariable UUID reservationId,
                                                 @RequestBody Map<String, Object> fields);
 
     @DeleteMapping("{reservationId}")
-//    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')") Autorizar o USER ou o ADMIN???
     ResponseEntity<Void> deleteReservationById(@PathVariable UUID reservationId);
 
 }

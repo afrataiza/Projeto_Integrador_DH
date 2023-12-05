@@ -33,7 +33,7 @@ public class ImagesServiceImpl implements ImagesService {
 
     @Override
     public Images createImages(Images images) {
-        return null;
+        return imagesRepository.save(images);
     }
 
     @Override

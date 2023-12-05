@@ -7,6 +7,7 @@ import com.br.digital_hoteis.domain.exception.HotelNotFoundException;
 import com.br.digital_hoteis.domain.exception.ReservationNotFoundException;
 import com.br.digital_hoteis.domain.repository.HotelRepository;
 import com.br.digital_hoteis.domain.repository.ReservationRepository;
+import com.br.digital_hoteis.domain.repository.specification.ReservationSpecification;
 import com.br.digital_hoteis.domain.service.ReservationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Page<Reservation> findAllReservations(Pageable page) {
         return reservationRepository.findAll(page);
+    }
+
+    @Override
+    public Page<Reservation> findReservationsByGuestId(UUID guestId, Pageable page) {
+        return reservationRepository.findAll(ReservationSpecification.byGuestId(guestId), page);
     }
 
     @Override
@@ -81,6 +87,17 @@ public class ReservationServiceImpl implements ReservationService {
                 .orElseThrow(() -> new ReservationNotFoundException(id));
         reservationRepository.delete(reservation);
     }
+
+    @Override
+    public Page<Reservation> findReservationsByHotelId(UUID hotelId, Pageable page) {
+        return reservationRepository.findAll(ReservationSpecification.byHotelId(hotelId), page);
+    }
+
+    @Override
+    public Page<Reservation> findAll(Pageable page) {
+        return reservationRepository.findAll(page);
+    }
+
 
     @Override
     public Reservation findReservationByGuestAndDates(Guest guest, LocalDate check_in_date, LocalDate check_out_date) {

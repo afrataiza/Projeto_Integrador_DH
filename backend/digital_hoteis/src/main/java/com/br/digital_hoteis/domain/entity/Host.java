@@ -1,8 +1,6 @@
 package com.br.digital_hoteis.domain.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,8 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "host")
-public class Host {
+public class Host extends UserDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -31,10 +28,11 @@ public class Host {
     @Column(columnDefinition = "DATE")
     private LocalDate birthdate;
 
-    @Column(length = 1, nullable = false)
-    @NotBlank(message = "The field 'gender' can't be null.")
-    @Pattern(regexp = "[M|F]", message = "The field 'gender' must be filled.")
-    private String gender;
+
+//    @Column(length = 1, nullable = false, columnDefinition = "CHAR(1) DEFAULT 'M'")
+//    @NotBlank(message = "The field 'gender' can't be null.")
+//    @Pattern(regexp = "[M|F]", message = "The field 'gender' must be filled.")
+//    private String gender;
 
     @CreatedDate
     @Column(columnDefinition = "DATETIME")
@@ -64,14 +62,15 @@ public class Host {
             final String name,
             final String surname,
             final LocalDate birthdate,
-            final String gender,
+//            final String gender,
             final Contact contact
     ) {
         Host host = new Host();
         host.setName(name);
         host.setSurname(surname);
         host.setBirthdate(birthdate);
-        host.setGender(gender);
+//        host.setGender(gender);
+        host.setHost(true);
         host.setContact(contact);
         return host;
     }

@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public record CreateReservationRequest(
         @Schema(description = "The rooms included in the reservation") Set<UUID> rooms,
+//        @Schema(example = "22:10:10", description = "Registration of the reservation's creation time") @NotNull Instant created_At,
         @Schema(example = "2023-01-01", description = "Check-in date") @NotNull LocalDate check_in_date,
         @Schema(example = "2023-01-07", description = "Check-out date") @NotNull LocalDate check_out_date,
         @Schema(description = "Special requests for the reservation") @NotBlank String requests,

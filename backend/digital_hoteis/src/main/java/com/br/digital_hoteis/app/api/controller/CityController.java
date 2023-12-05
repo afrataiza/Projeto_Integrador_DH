@@ -58,6 +58,7 @@ public class CityController implements CityApi {
        return ResponseEntity.ok(response);
     }
 
+    // método que nos permita filtrar os produtos por cidade e duas datas.
     @Override
     public ResponseEntity<Page<ReservationSummaryResponse>> findAvailableHotelsInCityByDates(
             UUID cityId,
@@ -88,6 +89,7 @@ public class CityController implements CityApi {
 
                     ReservationSummaryResponse reservationResponse = new ReservationSummaryResponse(
                             reservation.getId(),
+                            reservation.getCreated_At(),
                             check_in_date,
                             check_out_date,
                             guestSummary,

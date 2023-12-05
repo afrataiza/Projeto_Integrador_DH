@@ -16,6 +16,7 @@ import java.util.UUID;
 public class PageParamsReservationResponse {
     @Getter
     public static class Reservation {
+        @Schema(description = "The unique identifier for the reservations")
         private UUID id;
 
         @Schema(example = "2023-09-27T15:30:00Z")

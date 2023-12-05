@@ -14,6 +14,7 @@ import java.util.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class UserDetail implements UserDetails {
     @Id
@@ -30,12 +31,89 @@ public class UserDetail implements UserDetails {
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
-    private UserPermissionEnum role;
+    @Builder.Default
+    private UserPermissionEnum role = UserPermissionEnum.USER;
+
+    @Column(name = "isEnabled")
+    private boolean isEnabled;
+
+    @Column(name = "isHost")
+    private boolean isHost;
+
+    @Column(length = 1, columnDefinition = "CHAR(1) DEFAULT 'M'")
+//    @Pattern(regexp = "[M|F]", message = "The field 'gender' must be filled.")
+    public String gender;
 
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_details")
+    @JoinColumn(name = "user_detail")
     private Set<ReviewScore> reviewScores = new HashSet<>();
+
+    public UserDetail(String name,
+                      String surname,
+                      String email,
+                      String password,
+                      String gender) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+    }
+
+    public UserDetail(String name,
+                      String surname,
+                      String email,
+                      String password,
+                      UserPermissionEnum role,
+                      boolean isEnabled) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.isEnabled = isEnabled;
+    }
+
+
+    public UserDetail(String name,
+                      String surname,
+                      String email,
+                      boolean isEnabled,
+                      String password
+                      ) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.isEnabled = isEnabled;
+        this.password = password;
+
+    }
+
+    public UserDetail(String name,
+                      String surname,
+                      String email,
+                      String password,
+                      String gender,
+                      UserPermissionEnum role) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.role = role;
+    }
+
+    public UserDetail(String name,
+                      String surname,
+                      String email,
+                      String password) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+    }
+
 
     public UserDetail(String name,
                       String surname,
@@ -49,7 +127,34 @@ public class UserDetail implements UserDetails {
         this.role = role;
     }
 
-    public UserDetail() {
+    public UserDetail(String name,
+                      String surname,
+                      String email,
+                      String password,
+                      boolean isHost,
+                      String gender) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.isHost = isHost;
+        this.role = (isHost) ? UserPermissionEnum.ADMIN : UserPermissionEnum.USER;
+        this.gender = gender;
+    }
+
+    public UserDetail(String name,
+                      String surname,
+                      String email,
+                      String password,
+                      boolean isHost,
+                      boolean isEnabled) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.isHost = isHost;
+        this.role = (isHost) ? UserPermissionEnum.ADMIN : UserPermissionEnum.USER;
+        this.isEnabled = isEnabled;
     }
 
 
@@ -62,8 +167,29 @@ public class UserDetail implements UserDetails {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
+                ", isEnabled=" + isEnabled +
                 ", reviewScores=" + reviewScores +
                 '}';
+    }
+
+//    public void setEnabled(boolean enabled) {
+//        is_enabled = enabled;
+//    }
+
+    public Set<ReviewScore> getReviewScores() {
+        return reviewScores;
+    }
+
+    public void setReviewScores(Set<ReviewScore> reviewScores) {
+        this.reviewScores = reviewScores;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public UUID getId() {
@@ -141,9 +267,25 @@ public class UserDetail implements UserDetails {
         return true;
     }
 
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
+
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public boolean isHost() {
+        return isHost;
+    }
+
+    public void setHost(boolean host) {
+        isHost = host;
+    }
 }

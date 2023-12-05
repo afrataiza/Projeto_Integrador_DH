@@ -5,6 +5,7 @@ import com.br.digital_hoteis.app.api.dto.openapi.PageParamsRequest;
 import com.br.digital_hoteis.app.api.dto.request.CreateGuestRequest;
 import com.br.digital_hoteis.app.api.dto.response.GuestDetailedResponse;
 import com.br.digital_hoteis.app.api.dto.response.GuestSummaryResponse;
+import com.br.digital_hoteis.app.api.dto.response.ReservationSummaryResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,4 +49,12 @@ public interface GuestApi {
     @DeleteMapping("{guestId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<Void> deleteGuestById(@PathVariable UUID guestId);
+
+    @GetMapping("/guests/{guestId}/reservations")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Page<ReservationSummaryResponse>> findReservationsByGuestId(
+            @PathVariable UUID guestId,
+            @PageableDefault Pageable page);
 }
+
+

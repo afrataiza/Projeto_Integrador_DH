@@ -1,6 +1,5 @@
 package com.br.digital_hoteis.app.api.dto;
 
-import com.br.digital_hoteis.domain.entity.UserPermissionEnum;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,5 +11,6 @@ public class SignUp {
     private String email;
     private String retype_email;
     private String password;
-    private UserPermissionEnum role;
+//    private UserPermissionEnum role;
+    private boolean isHost;
 }

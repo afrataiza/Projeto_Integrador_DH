@@ -111,7 +111,6 @@ CREATE TABLE guest (
     name VARCHAR(255) NOT NULL,
     surname VARCHAR(255) NOT NULL,
     birthdate DATE,
-    gender VARCHAR(1) NOT NULL,
     created_At DATETIME,
     updated_At DATETIME,
     city_id BINARY(16),
@@ -122,12 +121,13 @@ CREATE TABLE guest (
     FOREIGN KEY (hotel_id) REFERENCES hotel(id)
 );
 
+
+
 CREATE TABLE host (
     id BINARY(16) PRIMARY KEY,
     name VARCHAR(35) NOT NULL,
     surname VARCHAR(65) NOT NULL,
     birthdate DATE,
-    gender VARCHAR(1) NOT NULL,
     created_At DATETIME,
     updated_At DATETIME,
     host_contact_id BINARY(16),
@@ -135,6 +135,7 @@ CREATE TABLE host (
     FOREIGN KEY (host_contact_id) REFERENCES contact(id),
     FOREIGN KEY (host_hotel_id) REFERENCES hotel(id)
 );
+
 
 CREATE TABLE images (
     id BINARY(16) PRIMARY KEY,
@@ -153,6 +154,7 @@ CREATE TABLE reservation (
     is_canceled BOOLEAN DEFAULT false,
     created_at DATETIME,
     updated_at DATETIME,
+    isVaccinatedAgainstCovid BOOLEAN DEFAULT false,
     reservation_guest_id BINARY(16),
     reservation_host_id BINARY(16),
     reservation_hotel_id BINARY(16),
@@ -191,16 +193,17 @@ CREATE TABLE reservation_room (
 );
 
 
-CREATE TABLE user_details (
+CREATE TABLE user_detail (
     id BINARY(16) PRIMARY KEY,
     name VARCHAR(255),
     surname VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
-    role VARCHAR(255),
-    UNIQUE INDEX idx_user_details_email (email)
+    role VARCHAR(255) DEFAULT 'USER',
+    isEnabled BOOLEAN,
+    isHost BOOLEAN,
+    UNIQUE INDEX idx_user_detail_email (email)
 );
-
 
 CREATE TABLE review_score (
     hotel_id BINARY(16) NOT NULL,
@@ -211,6 +214,25 @@ CREATE TABLE review_score (
     FOREIGN KEY (user_detail_id) REFERENCES user_detail(id)
 );
 
+CREATE TABLE reservation_host (
+    reservation_id BINARY(16),
+    host_id BINARY(16),
+    PRIMARY KEY (reservation_id, host_id),
+    FOREIGN KEY (reservation_id) REFERENCES reservation(id),
+    FOREIGN KEY (host_id) REFERENCES host(id)
+);
+
 
 ALTER TABLE review_score
 ADD CONSTRAINT uk_review_scores UNIQUE (hotel_id, user_detail_id);
+
+CREATE TABLE confirmationToken (
+    token_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    confirmation_token VARCHAR(255) NOT NULL,
+    created_date DATETIME,
+    user_detail_id BINARY(16),
+    FOREIGN KEY (user_detail_id) REFERENCES user_detail(id)
+);
+
+
+

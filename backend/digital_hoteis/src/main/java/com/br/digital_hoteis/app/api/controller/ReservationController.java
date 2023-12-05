@@ -45,6 +45,7 @@ public class ReservationController implements ReservationApi {
 
                     return new ReservationSummaryResponse(
                             reservation.getId(),
+                            reservation.getCreated_At(),
                             reservation.getCheck_in_date(),
                             reservation.getCheck_in_date(),
                             new GuestSummaryResponse(
@@ -88,6 +89,7 @@ public class ReservationController implements ReservationApi {
 
         ReservationSummaryResponse reservationSummary = new ReservationSummaryResponse(
                 reservation.getId(),
+                reservation.getCreated_At(),
                 reservation.getCheck_in_date(),
                 reservation.getCheck_out_date(),
                 guestSummary,
@@ -103,6 +105,7 @@ public class ReservationController implements ReservationApi {
         ReservationDetailedResponse response = new ReservationDetailedResponse(
                 reservation.getId(),
                 roomSummaryResponses,
+                reservation.getCreated_At(),
                 reservation.getCheck_in_date(),
                 reservation.getCheck_out_date(),
                 reservation.getRequests(),
@@ -135,6 +138,7 @@ public class ReservationController implements ReservationApi {
         Reservation reservation = Reservation.newReservation(
                 rooms,
                 hotel,
+//                request.created_At(),
                 request.check_in_date(),
                 request.check_out_date(),
                 request.requests(),

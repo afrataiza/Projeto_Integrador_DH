@@ -21,6 +21,14 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @CreatedDate
+    @Column(columnDefinition = "DATETIME")
+    private Instant created_At;
+
+    @LastModifiedDate
+    @Column(columnDefinition = "DATETIME")
+    private Instant updated_At;
+
     @Column(columnDefinition = "DATE")
     private LocalDate check_in_date;
 
@@ -29,6 +37,8 @@ public class Reservation {
 
     @Column(nullable = false)
     private String requests;
+
+    private boolean isVaccinatedAgainstCovid;
 
 
     @ManyToOne(optional = false)
@@ -45,6 +55,8 @@ public class Reservation {
     private Set<Host> hosts;
 
 
+
+
 //    @MapsId("hostId")
 //    @ManyToOne(optional = false)
 //    @JoinColumn(name = "host_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reservation_host_id"))
@@ -59,16 +71,7 @@ public class Reservation {
     @JoinColumn(name = "hotel_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reservation_hotel_id"))
     private Hotel hotel;
 
-
     private boolean is_canceled;
-
-    @CreatedDate
-    @Column(columnDefinition = "DATETIME")
-    private Instant created_At;
-
-    @LastModifiedDate
-    @Column(columnDefinition = "DATETIME")
-    private Instant updated_At;
 
     @ManyToMany
     @JoinTable(
@@ -177,7 +180,7 @@ public class Reservation {
                 ", hosts=" + hosts +
                 ", hotel=" + hotel +
                 ", is_canceled=" + is_canceled +
-                ", created_At=" + created_At +
+//                ", created_At=" + created_At +
                 ", updated_At=" + updated_At +
                 ", rooms=" + rooms +
                 '}';
@@ -186,6 +189,7 @@ public class Reservation {
     public static Reservation newReservation(
             final Set<Room> rooms,
             final Hotel hotel,
+//            final Instant created_At,
             final LocalDate check_in_date,
             final LocalDate check_out_date,
             final String requests,
@@ -195,6 +199,7 @@ public class Reservation {
         Reservation reservation = new Reservation();
         reservation.setRooms(rooms);
         reservation.setHotel(hotel);
+//        reservation.setCreated_At(created_At);
         reservation.setCheck_in_date(check_in_date);
         reservation.setCheck_out_date(check_out_date);
         reservation.setRequests(requests);

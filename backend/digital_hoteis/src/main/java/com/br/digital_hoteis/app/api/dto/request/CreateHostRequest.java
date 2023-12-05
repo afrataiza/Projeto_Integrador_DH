@@ -9,7 +9,7 @@ public record CreateHostRequest(
         @Schema(example = "John") @NotBlank String name,
         @Schema(example = "Doe") @NotBlank String surname,
         @Schema(example = "1990-01-01") LocalDate birthdate,
-        @Schema(example = "M") @NotBlank String gender,
+//        @Schema(example = "M") String gender,
         @Schema CreateContactRequest contact
 ) {
 }

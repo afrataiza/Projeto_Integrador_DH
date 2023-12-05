@@ -6,11 +6,16 @@ import com.br.digital_hoteis.app.api.dto.response.*;
 import com.br.digital_hoteis.domain.entity.City;
 import com.br.digital_hoteis.domain.entity.Contact;
 import com.br.digital_hoteis.domain.entity.Guest;
+import com.br.digital_hoteis.domain.entity.Reservation;
 import com.br.digital_hoteis.domain.service.GuestService;
+import com.br.digital_hoteis.domain.service.ReservationService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,6 +32,7 @@ import static com.br.digital_hoteis.domain.entity.Contact.newContact;
 public class GuestController implements GuestApi {
 
     private final GuestService guestService;
+    private final ReservationService reservationService;
 
     @Override
     public ResponseEntity<Page<GuestSummaryResponse>> findGuests(Pageable page) {
@@ -45,6 +51,7 @@ public class GuestController implements GuestApi {
                 .stream()
                 .map(reservation -> new ReservationSummaryResponse(
                         reservation.getId(),
+                        reservation.getCreated_At(),
                         reservation.getCheck_in_date(),
                         reservation.getCheck_out_date(),
                         new GuestSummaryResponse(
@@ -109,7 +116,7 @@ public class GuestController implements GuestApi {
        guest.setName(request.name());
        guest.setBirthdate(request.birthdate());
        guest.setCity(city);
-       guest.setGender(request.gender());
+//       guest.setGender(request.gender());
        guest.setContact(contact);
 
         Guest createdGuest = guestService.createGuest(guest);
@@ -130,4 +137,40 @@ public class GuestController implements GuestApi {
         guestService.deleteGuestById(guestId);
         return ResponseEntity.noContent().build();
     }
+
+
+    @Override
+    public ResponseEntity<Page<ReservationSummaryResponse>> findReservationsByGuestId(
+            @PathVariable UUID guestId,
+            @PageableDefault Pageable page) {
+        Page<Reservation> reservationsPage = reservationService.findReservationsByGuestId(guestId, page);
+        Page<ReservationSummaryResponse> response = reservationsPage.map(reservation ->
+                new ReservationSummaryResponse(
+                        reservation.getId(),
+                        reservation.getCreated_At(),
+                        reservation.getCheck_in_date(),
+                        reservation.getCheck_out_date(),
+                        new GuestSummaryResponse(
+                                reservation.getGuest().getId(),
+                                reservation.getGuest().getName(),
+                                reservation.getGuest().getSurname()
+                        ),
+                        reservation.getHosts().stream().map(host ->
+                                new HostSummaryResponse(
+                                        host.getId(),
+                                        host.getName(),
+                                        host.getSurname()
+                                )
+                        ).collect(Collectors.toSet()),
+                        new HotelSummaryResponse(
+                                reservation.getHotel().getId(),
+                                reservation.getHotel().getTrading_name(),
+                                reservation.getHotel().getCnpj(),
+                                reservation.getHotel().getDescription()
+                        )
+                )
+        );
+        return ResponseEntity.ok(response);
+    }
+
 }

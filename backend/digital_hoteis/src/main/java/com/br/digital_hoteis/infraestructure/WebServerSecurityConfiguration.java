@@ -34,7 +34,9 @@ public class WebServerSecurityConfiguration {
             "/v3/api-docs.yaml",
             "/swagger-ui/**",
             "/swagger-ui.html",
-            "/Categories/**"
+            "/Categories/**",
+            "/v1/authentication/confirm-account",
+            "/v1/authentication/**"
     };
 
     @Bean

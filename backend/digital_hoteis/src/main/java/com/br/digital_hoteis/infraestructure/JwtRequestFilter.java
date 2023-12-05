@@ -32,12 +32,30 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
-        if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
+
+        // Exclude sign-up and sign-in paths from authentication
+        String requestURI = request.getRequestURI();
+        if ("/api/sign-up".equals(requestURI) || "/api/sign-in".equals(requestURI)) {
             filterChain.doFilter(request, response);
             return;
         }
+
+//        if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
+        if (authHeader == null || StringUtils.isEmpty(authHeader.trim()) || !StringUtils.startsWith(authHeader.trim(), "Bearer")) {
+            // Log statement
+            logger.info("Invalid or missing Bearer token. Skipping JWT validation.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUserName(jwt);
+
         if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.userDetailsService()
                     .loadUserByUsername(userEmail);
@@ -50,6 +68,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.setContext(context);
             }
         }
+
         filterChain.doFilter(request, response);
     }
+
 }

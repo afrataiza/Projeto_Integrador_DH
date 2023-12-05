@@ -9,6 +9,7 @@ import com.br.digital_hoteis.app.api.dto.response.HostSummaryResponse;
 import com.br.digital_hoteis.app.api.dto.response.HotelSummaryResponse;
 import com.br.digital_hoteis.domain.entity.Contact;
 import com.br.digital_hoteis.domain.entity.Host;
+import com.br.digital_hoteis.domain.entity.UserPermissionEnum;
 import com.br.digital_hoteis.domain.service.ContactService;
 import com.br.digital_hoteis.domain.service.HostService;
 import lombok.AllArgsConstructor;
@@ -77,7 +78,7 @@ public class HostController implements HostApi {
                 request.name(),
                 request.surname(),
                 request.birthdate(),
-                request.gender(),
+//                request.gender(),
                 contact
         );
 
@@ -99,4 +100,12 @@ public class HostController implements HostApi {
         hostService.deleteHostById(hostId);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
+    public ResponseEntity<Void> manageUserRoles(UUID hostId, UUID userId, UserPermissionEnum newRole) {
+
+        hostService.manageUserRoles(userId, newRole);
+        return ResponseEntity.ok().build();
+    }
+
 }

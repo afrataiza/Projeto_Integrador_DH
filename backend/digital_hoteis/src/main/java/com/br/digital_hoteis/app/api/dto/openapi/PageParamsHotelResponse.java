@@ -14,6 +14,7 @@ import java.util.UUID;
 public class PageParamsHotelResponse {
     @Getter
     public static class Hotel {
+        @Schema(description = "The unique identifier for the hotels")
         private UUID id;
 
         @Schema(example = "Hotel's trading name")

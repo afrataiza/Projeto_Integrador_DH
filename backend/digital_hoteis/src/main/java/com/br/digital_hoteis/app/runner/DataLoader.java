@@ -2,8 +2,6 @@ package com.br.digital_hoteis.app.runner;
 
 import com.br.digital_hoteis.domain.entity.Category;
 import com.br.digital_hoteis.domain.entity.RatingEnum;
-import com.br.digital_hoteis.domain.entity.UserDetail;
-import com.br.digital_hoteis.domain.entity.UserPermissionEnum;
 import com.br.digital_hoteis.domain.repository.CategoryRepository;
 import com.br.digital_hoteis.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,21 +100,25 @@ public class DataLoader implements ApplicationRunner {
 
         categoryRepository.saveAll(categories);
 
-        userRepository.save(
-                new UserDetail(
-                        "John",
-                        "Doe",
-                        "admin@digitalhoteis.fake.com",
-                        passwordAdmin,
-                        UserPermissionEnum.ADMIN));
-
-        userRepository.save(
-                new UserDetail(
-                        "Regular",
-                        "User",
-                        "john@digitalhoteis.fake.com",
-                        passwordUser,
-                        UserPermissionEnum.USER));
+//        userRepository.save(
+//                new UserDetail(
+//                        "John",
+//                        "Doe",
+//                        "admin3@digitalhoteis.fake.com",
+//                        passwordAdmin,
+//                        true,
+//                        true
+//                                ));
+//
+//        userRepository.save(
+//                new UserDetail(
+//                        "Regular",
+//                        "User",
+//                        "john2@digitalhoteis.fake.com",
+//                        passwordUser,
+//                        false,
+//                        true
+//                                ));
     }
 
     private Category createCategoryWithDetails(RatingEnum ratings, String description, String imageUrl) {

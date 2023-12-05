@@ -6,10 +6,7 @@ import com.br.digital_hoteis.app.api.dto.request.CreateContactRequest;
 import com.br.digital_hoteis.app.api.dto.request.CreateHostRequest;
 import com.br.digital_hoteis.app.api.dto.request.CreateHotelRequest;
 import com.br.digital_hoteis.app.api.dto.request.CreatePolicyRequest;
-import com.br.digital_hoteis.app.api.dto.response.GuestSummaryResponse;
-import com.br.digital_hoteis.app.api.dto.response.HostSummaryResponse;
-import com.br.digital_hoteis.app.api.dto.response.HotelDetailedResponse;
-import com.br.digital_hoteis.app.api.dto.response.HotelSummaryResponse;
+import com.br.digital_hoteis.app.api.dto.response.*;
 import com.br.digital_hoteis.domain.entity.Characteristics;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,6 +31,8 @@ public interface HotelApi {
     @ApiResponse(responseCode = "200", description = "Searching for all the pageable data of hotels",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = PageParamsHotelResponse.class)))
+
+
 
     @GetMapping
     ResponseEntity<Page<HotelSummaryResponse>> findAllHotels(@Schema(implementation = PageParamsRequest.class)
@@ -68,6 +67,7 @@ public interface HotelApi {
                                         @RequestParam Integer review_scores);
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<Void> createHotel(@RequestBody @Valid CreateHotelRequest request);
 
     @PatchMapping("{hotelId}")
@@ -77,6 +77,10 @@ public interface HotelApi {
     @PostMapping("{hotelId}/policies")
     ResponseEntity<Void> addPoliciesToAHotelById(@PathVariable UUID hotelId, @RequestBody @Valid CreatePolicyRequest request);
 
+    // busca as reservas pela id do hotel
+    @GetMapping("{hotelId}/reservations")
+    ResponseEntity<Page<ReservationSummaryResponse>> findReservationsByHotelId(@PathVariable UUID hotelId,
+                                                                        @PageableDefault Pageable pageable);
 
     @DeleteMapping("{hotelId}")
 //    @PreAuthorize("hasAuthority('ADMIN')")
@@ -89,6 +93,8 @@ public interface HotelApi {
     ResponseEntity<Void> addCharacteristics(@PathVariable UUID hotel_id, @RequestBody Characteristics characteristics);
     ResponseEntity<Void> createHosts(UUID hotel_id,
                                         @RequestBody @Valid CreateHostRequest hostRequest, @RequestBody @Valid CreateContactRequest contactRequest);
+
+
 }
 
 

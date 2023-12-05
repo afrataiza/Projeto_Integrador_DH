@@ -1,8 +1,11 @@
 package com.br.digital_hoteis.domain.service.impl;
 
 import com.br.digital_hoteis.domain.entity.Host;
+import com.br.digital_hoteis.domain.entity.UserDetail;
+import com.br.digital_hoteis.domain.entity.UserPermissionEnum;
 import com.br.digital_hoteis.domain.exception.HostNotFoundException;
 import com.br.digital_hoteis.domain.repository.HostRepository;
+import com.br.digital_hoteis.domain.repository.UserRepository;
 import com.br.digital_hoteis.domain.repository.specification.HostSpecification;
 import com.br.digital_hoteis.domain.service.HostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +30,7 @@ import static org.springframework.util.ReflectionUtils.getField;
 public class HostServiceImpl implements HostService {
 
     private final HostRepository hostRepository;
+    private final UserRepository userRepository;
     private final ObjectMapper mapper;
     @Override
     public Host findHostById(UUID id) {
@@ -73,4 +77,13 @@ public class HostServiceImpl implements HostService {
                 .orElseThrow(() -> new HostNotFoundException(id));
         hostRepository.delete(host);
     }
+
+    @Override
+    public void manageUserRoles(UUID userId, UserPermissionEnum newRole) {
+        UserDetail user = userRepository.findById(userId)
+                .orElseThrow(() -> new HostNotFoundException(userId));
+        user.setRole(newRole);
+        userRepository.save(user);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.br.digital_hoteis.domain.repository;
 
 import com.br.digital_hoteis.domain.entity.Host;
+import com.br.digital_hoteis.domain.entity.UserPermissionEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,6 +16,9 @@ public interface HostRepository extends JpaRepository<Host, UUID>, JpaSpecificat
     @Query("SELECT h FROM Host h WHERE h.id = :id")
     Host findHostById(UUID id);
 
+    @Modifying
+    @Query("UPDATE UserDetail u SET u.role = :newRole WHERE u.id = :userId")
+    void updateUserRole(@Param("userId") UUID userId, @Param("newRole") UserPermissionEnum newRole);
 
     @Modifying
     @Query("UPDATE Host h SET " +

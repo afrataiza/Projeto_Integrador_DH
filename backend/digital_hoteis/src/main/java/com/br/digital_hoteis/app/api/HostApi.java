@@ -6,6 +6,7 @@ import com.br.digital_hoteis.app.api.dto.request.CreateContactRequest;
 import com.br.digital_hoteis.app.api.dto.request.CreateHostRequest;
 import com.br.digital_hoteis.app.api.dto.response.HostDetailedResponse;
 import com.br.digital_hoteis.app.api.dto.response.HostSummaryResponse;
+import com.br.digital_hoteis.domain.entity.UserPermissionEnum;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,5 +49,12 @@ public interface HostApi {
     @DeleteMapping("{hostId}")
 //  @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<Void> deleteHostById(@PathVariable UUID hostId);
+
+    @PostMapping("{hostId}/manageUserRoles")
+    @ApiResponse(responseCode = "200", description = "Método para adicionar novas funções.")
+    ResponseEntity<Void> manageUserRoles(@PathVariable UUID hostId,
+                                         @RequestParam("userId") UUID userId,
+                                         @RequestParam("newRole") UserPermissionEnum newRole);
 }
+
 

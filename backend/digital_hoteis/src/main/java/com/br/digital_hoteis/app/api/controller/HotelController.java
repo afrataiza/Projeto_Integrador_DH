@@ -31,6 +31,7 @@ public class HotelController implements HotelApi {
     private final RoomService roomService;
     private final GuestService guestService;
     private final ImagesService imagesService;
+    private final ReservationService reservationService;
     private final CharacteristicsService characteristicsService;
     private final ReviewScoreService reviewScoreService;
 
@@ -223,7 +224,7 @@ public class HotelController implements HotelApi {
                 request.name(),
                 request.surname(),
                 request.birthdate(),
-                request.gender(),
+//                request.gender(),
                 contact
         );
         hotel.getHosts().add(host);
@@ -247,7 +248,7 @@ public class HotelController implements HotelApi {
                 hostRequest.name(),
                 hostRequest.surname(),
                 hostRequest.birthdate(),
-                hostRequest.gender(),
+//                hostRequest.gender(),
                 contact
         );
         hotel.getHosts().add(host);
@@ -307,6 +308,39 @@ public class HotelController implements HotelApi {
         hotelService.addPoliciesToAHotelById(hotel_id, policy);
 
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<Page<ReservationSummaryResponse>> findReservationsByHotelId(UUID hotel_id, Pageable pageable) {
+
+        Page<Reservation> reservations = reservationService.findReservationsByHotelId(hotel_id, pageable);
+
+        Page<ReservationSummaryResponse> response = reservations.map(reservation -> new ReservationSummaryResponse(
+                reservation.getId(),
+                reservation.getCreated_At(),
+                reservation.getCheck_in_date(),
+                reservation.getCheck_out_date(),
+                new GuestSummaryResponse(
+                        reservation.getGuest().getId(),
+                        reservation.getGuest().getName(),
+                        reservation.getGuest().getSurname()
+                ),
+                mapHostsToHostSummaryResponse(reservation.getHosts()),
+                new HotelSummaryResponse(
+                        reservation.getHotel().getId(),
+                        reservation.getHotel().getTrading_name(),
+                        reservation.getHotel().getCnpj(),
+                        reservation.getHotel().getDescription()
+                )
+        ));
+
+        return ResponseEntity.ok(response);
+    }
+
+    private Set<HostSummaryResponse> mapHostsToHostSummaryResponse(Set<Host> hosts) {
+        return hosts.stream()
+                .map(host -> new HostSummaryResponse(host.getId(), host.getName(), host.getSurname()))
+                .collect(Collectors.toSet());
     }
 
 

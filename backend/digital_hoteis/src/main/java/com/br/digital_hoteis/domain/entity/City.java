@@ -76,5 +76,77 @@ public class City {
         city.setCountry(country);
         return city;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Instant getCreated_At() {
+        return created_At;
+    }
+
+    public void setCreated_At(Instant created_At) {
+        this.created_At = created_At;
+    }
+
+    public Instant getUpdated_At() {
+        return updated_At;
+    }
+
+    public void setUpdated_At(Instant updated_At) {
+        this.updated_At = updated_At;
+    }
 }
 
